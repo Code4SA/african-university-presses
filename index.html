@@ -1,0 +1,155 @@
+<html>
+<head>
+  <link rel="stylesheet" href="cartodb.css" />
+  <title>African University Presses</title>
+  <script src="cartodb.js"></script>
+  <style>
+    html, body {width:100%; height:100%; padding: 0; margin: 0;}
+    #map { width: 100%; height:100%; background: white;}
+    #menu { position: absolute; top: 5px; right: 10px; width: 150px; height:60px; background: transparent; z-index:10;}
+    #menu a { 
+      margin: 15px 10px 0 0;
+      float: right;
+      vertical-align: baseline;
+      width: 120px;
+      padding: 10px;
+      text-align: center;
+      font: bold 11px "Helvetica",Arial;
+      line-height: normal;
+      color: #555;
+      border-radius: 4px;
+      border: 1px solid #777777;
+      background: #ffffff;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    #menu a.selected,
+    #menu a:hover { 
+      color: #F84F40;
+    }
+    #info{
+      margin: 15px 10px 0 0;
+        font: 15px "Helvetica",Arial;
+        color:#000;
+        background-color: rgba(255,255,255,.9);
+        width:250px;
+        height:400px;
+        top:5px;
+        left:60px;
+        border: 1px solid #777777;
+        border-radius: 4px;
+        position: absolute;
+        z-index: 11;
+        padding: 10px;
+        text-align: left;
+        display: table-cell;
+        vertical-align: center;
+      }
+    }
+  </style>
+
+  <script>
+  var map;
+    function init(){
+  // initiate leaflet map
+  map = new L.Map('map', { 
+      center: [0,10],
+      zoom: 3
+  })
+
+  L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', {
+    attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>, <a href="http://code4sa.org/" target="_blank">Code4SA</a>'
+  }).addTo(map);
+
+  var layerUrl = 'https://adi45.cartodb.com/api/v2/viz/ed4c7238-ca7d-11e5-83b4-0e31c9be1b51/viz.json';
+
+  var sublayers = [];
+
+  cartodb.createLayer(map, layerUrl)
+  .addTo(map)
+  .on('done', function(layer) {
+    // change the query for the first layer
+    var subLayerOptions = {
+      sql: "SELECT * FROM african_university_presses_input",
+      interactivity:"university, university_press, facebook_url, open_access, publication_fees, repository, twitter_handle, url",
+
+    }
+
+    var sublayer = layer.getSubLayer(0);
+    sublayer.set(subLayerOptions);
+
+sublayer.on('featureClick', function(e, latlng, pos, data, subLayerIndex) {
+  console.log("clicked feature: " + data);
+        university=data.university;
+	university_press=data.university_press;
+	facebook_url=data.facebook_url;
+	open_access=data.open_access;
+	publication_fees=data.publication_fees;
+	repository=data.repository;
+	twitter_handle=data.twitter_handle;
+	url=data.url;
+	info.innerHTML='<p>'+university+'</p>'+'<p>'+university_press+'</p>'+'</p>'+'<p>Open access: '+open_access+'</p>'+'<p>Publication fees: '+publication_fees+'</p>'+'<p>Institutional repository: '+repository+'<p>Website: '+url+'</p>'+'<p>Facebook: '+facebook_url+'<p>Twitter: '+twitter_handle+'</p>';
+
+});
+
+    sublayers.push(sublayer);
+  }).on('error', function() {
+    //log the error
+  })
+
+  //we define the queries that will be performed when we click on the buttons, by modifying the SQL of our layer
+  var LayerActions = {
+    all: function(){
+      sublayers[0].setSQL("SELECT * FROM african_university_presses_input");
+      return true;
+    },
+    twitter: function(){
+      sublayers[0].setSQL("SELECT * FROM african_university_presses_input WHERE twitter_handle != ''");
+      return true;
+    },
+    facebook: function(){
+      sublayers[0].setSQL("SELECT * FROM african_university_presses_input WHERE facebook_url != ''");
+      return true;
+    },
+    openaccess: function(){
+      sublayers[0].setSQL("SELECT * FROM african_university_presses_input WHERE open_access = 'yes'");
+      return true;
+    },
+    url: function(){
+      sublayers[0].setSQL("SELECT * FROM african_university_presses_input WHERE url != ''");
+      return true;
+    },
+    publicationfees: function(){
+      sublayers[0].setSQL("SELECT * FROM african_university_presses_input WHERE publication_fees = 'no'");
+      return true;
+    },
+    repository: function(){
+      sublayers[0].setSQL("SELECT * FROM african_university_presses_input WHERE repository != ''");
+      return true;
+    }
+  }
+
+  $('.button').click(function() {
+    $('.button').removeClass('selected');
+    $(this).addClass('selected');
+    //this gets the id of the different buttons and calls to LayerActions which responds according to the selected id
+    LayerActions[$(this).attr('id')]();
+  });
+}
+  </script>
+</head>
+
+<body onload="init()">
+  <div id='map'></div>
+  <div id="info"></div>
+  <div id='menu'>
+    <a href="#all" id="all" class="button all">ALL</a>
+    <a href="#publicationfees" id="publicationfees" class="button publicationfees">PUBLICATION FEES</a> 
+    <a href="#openaccess" id="openaccess" class="button openaccess">OPEN ACCESS</a> 
+    <a href="#repository" id="repository" class="button repository">INSTITUTIONAL REPOSITORY</a> 
+    <a href="#url" id="url" class="button url">WEBSITE</a> 
+    <a href="#facebook" id="facebook" class="button facebook">FACEBOOK</a> 
+    <a href="#twitter" id="twitter" class="button twitter">TWITTER</a> 
+  </div>
+</body>
+</html>
