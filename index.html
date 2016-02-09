@@ -6,7 +6,7 @@
   <style>
     html, body {width:100%; height:100%; padding: 0; margin: 0;}
     #map { width: 100%; height:100%; background: white;}
-    #menu { position: absolute; top: 5px; right: 10px; width: 150px; height:60px; background: transparent; z-index:10;}
+    #menu { position: absolute; top: 5px; right: 10px; width: 150px; height:60px; z-index:10;}
     #menu a { 
       margin: 15px 10px 0 0;
       float: right;
@@ -17,7 +17,7 @@
       font: bold 11px "Helvetica",Arial;
       line-height: normal;
       color: #555;
-      border-radius: 4px;
+      border-radius: 5px;
       border: 1px solid #777777;
       background: #ffffff;
       text-decoration: none;
@@ -25,27 +25,101 @@
     }
     #menu a.selected,
     #menu a:hover { 
-      color: #F84F40;
+      background-color: #337ab7;
+      color: white;
     }
     #info{
       margin: 15px 10px 0 0;
-        font: 15px "Helvetica",Arial;
-        color:#000;
-        background-color: rgba(255,255,255,.9);
-        width:250px;
-        height:400px;
-        top:5px;
-        left:60px;
-        border: 1px solid #777777;
-        border-radius: 4px;
-        position: absolute;
-        z-index: 11;
-        padding: 10px;
-        text-align: left;
-        display: table-cell;
-        vertical-align: center;
-      }
+      font: 15px "Helvetica",Arial;
+      color:#000;
+      background: #ffffff;
+      width:250px;
+      height:338px;
+      top:5px;
+      left:60px;
+      border: 1px solid #777777;
+      border-radius: 5px;
+      position: absolute;
+      z-index: 11;
+      padding: 10px;
+      text-align: left;
+      display: table-cell;
+      vertical-align: center;
     }
+    #info h2 {
+      margin: -10px -10px;
+      border-bottom: 1px solid #777777;
+      border-radius: 5px 5px 0px 0px;
+      padding: 10px;
+      background-color: #337ab7;
+      color: white;
+      font-size: 16px;
+    }
+    #info h3 {
+      margin-bottom: 0px;
+    }
+    #info a:link {
+      text-decoration:underline;
+      color: #337ab7;
+    }
+    #info a:hover {
+      text-decoration:none;
+    }
+    #info a:visited {
+      text-decoration:underline;
+      color: #337ab7;
+    }
+
+    #dataset a{
+      font: bold 15px "Helvetica",Arial;
+      color: #555;
+      background: #ffffff;
+      width:250px;
+      height:18px;
+      top:394px;
+      left:60px;
+      border: 1px solid #777777;
+      border-radius: 5px;
+      position: absolute;
+      z-index: 11;
+      padding: 10px;
+      text-align: center;
+      line-height: normal;
+      cursor: pointer;
+      text-decoration: none;
+      cursor: pointer;
+    }   
+    #dataset a.selected,
+    #dataset a:hover { 
+      background-color: #337ab7;
+      color: white; 
+    }
+    #feedback a{
+      font: bold 15px "Helvetica",Arial;
+      color: #555;
+      background: #ffffff;
+      width:250px;
+      height:18px;
+      top:448px;
+      left:60px;
+      border: 1px solid #777777;
+      border-radius: 5px;
+      position: absolute;
+      z-index: 11;
+      padding: 10px;
+      text-align: center;
+      vertical-align: middle;
+      cursor: pointer;
+      line-height: normal;
+      text-decoration: none;
+      cursor: pointer;
+    }   
+    #feedback a.selected,
+    #feedback a:hover { 
+      background-color: #337ab7;
+      color: white;
+    }
+
   </style>
 
   <script>
@@ -57,11 +131,12 @@
       zoom: 3
   })
 
-  L.tileLayer('https://dnv9my2eseobd.cloudfront.net/v3/cartodb.map-4xtxp73f/{z}/{x}/{y}.png', {
-    attribution: 'Mapbox <a href="http://mapbox.com/about/maps" target="_blank">Terms &amp; Feedback</a>, <a href="http://code4sa.org/" target="_blank">Code4SA</a>'
+
+  L.tileLayer("http://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
+    attribution: '<a href="http://code4sa.org/" target="_blank">Code4SA</a>'
   }).addTo(map);
 
-  var layerUrl = 'https://adi45.cartodb.com/api/v2/viz/ed4c7238-ca7d-11e5-83b4-0e31c9be1b51/viz.json';
+  var layerUrl = 'https://adi45.cartodb.com/api/v2/viz/f394b4a6-ce48-11e5-85e3-0e674067d321/viz.json';
 
   var sublayers = [];
 
@@ -70,8 +145,8 @@
   .on('done', function(layer) {
     // change the query for the first layer
     var subLayerOptions = {
-      sql: "SELECT * FROM african_university_presses_input",
-      interactivity:"university, university_press, facebook_url, open_access, publication_fees, repository, twitter_handle, url",
+      sql: "SELECT * FROM presses",
+      interactivity:"university, university_press, facebook, twitter, url, repository, open_access, most_recent, publication_fees",
 
     }
 
@@ -81,16 +156,33 @@
 sublayer.on('featureClick', function(e, latlng, pos, data, subLayerIndex) {
   console.log("clicked feature: " + data);
         university=data.university;
-	university_press=data.university_press;
-	facebook_url=data.facebook_url;
-	open_access=data.open_access;
-	publication_fees=data.publication_fees;
-	repository=data.repository;
-	twitter_handle=data.twitter_handle;
-	url=data.url;
-	info.innerHTML='<p>'+university+'</p>'+'<p>'+university_press+'</p>'+'</p>'+'<p>Open access: '+open_access+'</p>'+'<p>Publication fees: '+publication_fees+'</p>'+'<p>Institutional repository: '+repository+'<p>Website: '+url+'</p>'+'<p>Facebook: '+facebook_url+'<p>Twitter: '+twitter_handle+'</p>';
+        university_press=data.university_press;
+        most_recent=data.most_recent;
+        facebook_url=data.facebook;
+        open_access=data.open_access;
+        publication_fees=data.publication_fees;
+        repository=data.repository;
+        twitter_handle=data.twitter;
+        url=data.url;
+
+        var details = '<h2>'+university+'</h2><h3>'+university_press+'</h3><div class="details">';
+        if (url) details += url;
+        details += '<p>Open access: '+open_access+'</p>'+'<p>Publication fees: '+publication_fees+'</p>'+'<p>Most recent publication: '+most_recent+'<p>Institutional repository: '+repository+'</p>'+'<p>Facebook: '+facebook_url+'<p>Twitter: '+twitter_handle+'</p></div>'
+
+        info.innerHTML = details;
 
 });
+
+sublayer.on('mouseover', function() {
+    $("#map").css('cursor', 'pointer');
+});
+
+sublayer.on('mouseout', function() {
+    $("#map").css('cursor', 'auto');
+});
+
+sublayer.setInteraction(true);
+
 
     sublayers.push(sublayer);
   }).on('error', function() {
@@ -100,31 +192,31 @@ sublayer.on('featureClick', function(e, latlng, pos, data, subLayerIndex) {
   //we define the queries that will be performed when we click on the buttons, by modifying the SQL of our layer
   var LayerActions = {
     all: function(){
-      sublayers[0].setSQL("SELECT * FROM african_university_presses_input");
+      sublayers[0].setSQL("SELECT * FROM presses");
       return true;
     },
     twitter: function(){
-      sublayers[0].setSQL("SELECT * FROM african_university_presses_input WHERE twitter_handle != ''");
+      sublayers[0].setSQL("SELECT * FROM presses WHERE twitter != ''");
       return true;
     },
     facebook: function(){
-      sublayers[0].setSQL("SELECT * FROM african_university_presses_input WHERE facebook_url != ''");
+      sublayers[0].setSQL("SELECT * FROM presses WHERE facebook != ''");
       return true;
     },
     openaccess: function(){
-      sublayers[0].setSQL("SELECT * FROM african_university_presses_input WHERE open_access = 'yes'");
+      sublayers[0].setSQL("SELECT * FROM presses WHERE open_access = 'yes'");
       return true;
     },
     url: function(){
-      sublayers[0].setSQL("SELECT * FROM african_university_presses_input WHERE url != ''");
+      sublayers[0].setSQL("SELECT * FROM presses WHERE url != ''");
       return true;
     },
     publicationfees: function(){
-      sublayers[0].setSQL("SELECT * FROM african_university_presses_input WHERE publication_fees = 'no'");
+      sublayers[0].setSQL("SELECT * FROM presses WHERE publication_fees = 'no'");
       return true;
     },
     repository: function(){
-      sublayers[0].setSQL("SELECT * FROM african_university_presses_input WHERE repository != ''");
+      sublayers[0].setSQL("SELECT * FROM presses WHERE repository != ''");
       return true;
     }
   }
@@ -143,13 +235,18 @@ sublayer.on('featureClick', function(e, latlng, pos, data, subLayerIndex) {
   <div id='map'></div>
   <div id="info"></div>
   <div id='menu'>
-    <a href="#all" id="all" class="button all">ALL</a>
-    <a href="#publicationfees" id="publicationfees" class="button publicationfees">PUBLICATION FEES</a> 
-    <a href="#openaccess" id="openaccess" class="button openaccess">OPEN ACCESS</a> 
-    <a href="#repository" id="repository" class="button repository">INSTITUTIONAL REPOSITORY</a> 
-    <a href="#url" id="url" class="button url">WEBSITE</a> 
-    <a href="#facebook" id="facebook" class="button facebook">FACEBOOK</a> 
-    <a href="#twitter" id="twitter" class="button twitter">TWITTER</a> 
+    <a href="#all" id="all" class="button all selected" title="Show all university presses">ALL PRESSES</a>
+    <a href="#openaccess" id="openaccess" class="button openaccess" title="Show presses with open access">OPEN ACCESS</a> 
+    <a href="#publicationfees" id="publicationfees" class="button publicationfees" title="Show presses without publication fees">PUBLICATION FEES</a> 
+    <a href="#repository" id="repository" class="button repository" title="Show presses with an institutional repository">INSTITUTIONAL REPOSITORY</a> 
+    <a href="#url" id="url" class="button url" title="Show presses with their own website">WEBSITE</a> 
+    <a href="#facebook" id="facebook" class="button facebook" title="Show presses with a Facebook page">FACEBOOK</a> 
+    <a href="#twitter" id="twitter" class="button twitter" title="Show presses with a Twitter page">TWITTER</a> 
   </div>
+
+  <div id='dataset'><a href="https://docs.google.com/spreadsheets/d/1URiTsMVkeM12DlZT7IfxqcYgVEt0hohIi4xIy983FI8" target="_blank">Download full dataset</a></div>
+
+  <div id='feedback'><a href="https://docs.google.com/a/code4sa.org/forms/d/1hjOAxKuRWRwWzKDscWH-H2O2k5ut7j46WDrZkZn9Jcg/viewform" target="_blank">Feedback / corrections</a></div>
+
 </body>
 </html>
