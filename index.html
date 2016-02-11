@@ -145,7 +145,7 @@
   .on('done', function(layer) {
     // change the query for the first layer
     var subLayerOptions = {
-      sql: "SELECT * FROM presses",
+      sql: "SELECT * FROM african_university_presses_cartodb",
       interactivity:"university, university_press, facebook, twitter, url, repository, open_access, most_recent",
 
     }
@@ -191,27 +191,27 @@ sublayer.setInteraction(true);
   //we define the queries that will be performed when we click on the buttons, by modifying the SQL of our layer
   var LayerActions = {
     all: function(){
-      sublayers[0].setSQL("SELECT * FROM presses");
+      sublayers[0].setSQL("SELECT * FROM african_university_presses_cartodb");
       return true;
     },
     twitter: function(){
-      sublayers[0].setSQL("SELECT * FROM presses WHERE twitter != ''");
+      sublayers[0].setSQL("SELECT * FROM african_university_presses_cartodb WHERE twitter != ''");
       return true;
     },
     facebook: function(){
-      sublayers[0].setSQL("SELECT * FROM presses WHERE facebook != ''");
+      sublayers[0].setSQL("SELECT * FROM african_university_presses_cartodb WHERE facebook != ''");
       return true;
     },
     openaccess: function(){
-      sublayers[0].setSQL("SELECT * FROM presses WHERE open_access = 'yes'");
+      sublayers[0].setSQL("SELECT * FROM african_university_presses_cartodb WHERE open_access = 'yes'");
       return true;
     },
     url: function(){
-      sublayers[0].setSQL("SELECT * FROM presses WHERE url != ''");
+      sublayers[0].setSQL("SELECT * FROM african_university_presses_cartodb WHERE url != ''");
       return true;
     },
     repository: function(){
-      sublayers[0].setSQL("SELECT * FROM presses WHERE repository != ''");
+      sublayers[0].setSQL("SELECT * FROM african_university_presses_cartodb WHERE repository != ''");
       return true;
     }
   }
