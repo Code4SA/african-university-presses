@@ -34,7 +34,7 @@
       color:#000;
       background: #ffffff;
       width:250px;
-      height:338px;
+      height:313px;
       top:5px;
       left:60px;
       border: 1px solid #777777;
@@ -76,7 +76,7 @@
       background: #ffffff;
       width:250px;
       height:18px;
-      top:394px;
+      top:369px;
       left:60px;
       border: 1px solid #777777;
       border-radius: 5px;
@@ -100,7 +100,7 @@
       background: #ffffff;
       width:250px;
       height:18px;
-      top:448px;
+      top:423px;
       left:60px;
       border: 1px solid #777777;
       border-radius: 5px;
@@ -136,7 +136,7 @@
     attribution: '<a href="http://code4sa.org/" target="_blank">Code4SA</a>'
   }).addTo(map);
 
-  var layerUrl = 'https://adi45.cartodb.com/api/v2/viz/f394b4a6-ce48-11e5-85e3-0e674067d321/viz.json';
+  var layerUrl = 'https://adi45.cartodb.com/api/v2/viz/305d8cd2-d09c-11e5-b356-0e787de82d45/viz.json';
 
   var sublayers = [];
 
@@ -146,7 +146,7 @@
     // change the query for the first layer
     var subLayerOptions = {
       sql: "SELECT * FROM presses",
-      interactivity:"university, university_press, facebook, twitter, url, repository, open_access, most_recent, publication_fees",
+      interactivity:"university, university_press, facebook, twitter, url, repository, open_access, most_recent",
 
     }
 
@@ -160,14 +160,13 @@ sublayer.on('featureClick', function(e, latlng, pos, data, subLayerIndex) {
         most_recent=data.most_recent;
         facebook_url=data.facebook;
         open_access=data.open_access;
-        publication_fees=data.publication_fees;
         repository=data.repository;
         twitter_handle=data.twitter;
         url=data.url;
 
         var details = '<h2>'+university+'</h2><h3>'+university_press+'</h3><div class="details">';
         if (url) details += url;
-        details += '<p>Open access: '+open_access+'</p>'+'<p>Publication fees: '+publication_fees+'</p>'+'<p>Most recent publication: '+most_recent+'<p>Institutional repository: '+repository+'</p>'+'<p>Facebook: '+facebook_url+'<p>Twitter: '+twitter_handle+'</p></div>'
+        details += '<p>Open access: '+open_access+'</p>'+'<p>Most recent publication: '+most_recent+'<p>Institutional repository: '+repository+'</p>'+'<p>Facebook: '+facebook_url+'<p>Twitter: '+twitter_handle+'</p></div>'
 
         info.innerHTML = details;
 
@@ -211,10 +210,6 @@ sublayer.setInteraction(true);
       sublayers[0].setSQL("SELECT * FROM presses WHERE url != ''");
       return true;
     },
-    publicationfees: function(){
-      sublayers[0].setSQL("SELECT * FROM presses WHERE publication_fees = 'no'");
-      return true;
-    },
     repository: function(){
       sublayers[0].setSQL("SELECT * FROM presses WHERE repository != ''");
       return true;
@@ -237,7 +232,6 @@ sublayer.setInteraction(true);
   <div id='menu'>
     <a href="#all" id="all" class="button all selected" title="Show all university presses">ALL PRESSES</a>
     <a href="#openaccess" id="openaccess" class="button openaccess" title="Show presses with open access">OPEN ACCESS</a> 
-    <a href="#publicationfees" id="publicationfees" class="button publicationfees" title="Show presses without publication fees">PUBLICATION FEES</a> 
     <a href="#repository" id="repository" class="button repository" title="Show presses with an institutional repository">INSTITUTIONAL REPOSITORY</a> 
     <a href="#url" id="url" class="button url" title="Show presses with their own website">WEBSITE</a> 
     <a href="#facebook" id="facebook" class="button facebook" title="Show presses with a Facebook page">FACEBOOK</a> 
