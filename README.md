@@ -9,6 +9,7 @@ Making changes can be done by editing the [Google Sheet](https://docs.google.com
 
 ## Formatting rules
 There are a few important formatting rules that must be followed:
+
 1. Never add a row above the current column headers. The headers in the CartoDB input section must remain the way they are for CartoDB to take them into consideration when drawing the map and its features. Changing the headers will result in an empty map. 
 2. Always include http:// or https:// when entering links. For Facebook it must be https://. Failure to do so will cause CartoDB to consider it text rather than a link.
 3. The twitter handle must be just that (so `@UCTPress` rather than `https://twitter.com/uctpress`)
