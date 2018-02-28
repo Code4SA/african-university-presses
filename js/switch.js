@@ -1,7 +1,7 @@
   var map;
     function init(){
   // initiate leaflet map
-  map = new L.Map('map', { 
+  map = new L.Map('map', {
       center: [0,10],
       zoom: 3
   })
@@ -21,30 +21,49 @@
     // change the query for the first layer
     var subLayerOptions = {
       sql: "SELECT * FROM african_university_presses",
-      interactivity:"university_carto, university_press_carto, facebook_carto, twitter_carto, url_carto, repository_carto, open_access_carto, most_recent_carto",
-
+      interactivity:"university_carto, scholarly_publisher_carto, facebook_carto, twitter_carto, url_carto, repository_carto, open_access_carto, most_recent_carto, image_url_carto",
     }
 
     var sublayer = layer.getSubLayer(0);
     sublayer.set(subLayerOptions);
 
 sublayer.on('featureClick', function(e, latlng, pos, data, subLayerIndex) {
-  console.log("clicked feature: " + data);
-        university=data.university_carto;
-        university_press=data.university_press_carto;
-        most_recent=data.most_recent_carto;
-        facebook=data.facebook_carto;
-        open_access=data.open_access_carto;
-        repository=data.repository_carto;
-        twitter=data.twitter_carto;
-        url=data.url_carto;
+  var university = data.university_carto;
+  var scholarly_publisher = data.scholarly_publisher_carto;
+  if (data.url_carto) {
+    var url = '<li><i class="fa-li fa fa-link"></i>' + data.url_carto + '</li>';
+  } else {
+    var url = '';
+  };
 
-        var details = '<h2>'+university+'</h2><h3>'+university_press+'</h3><div class="details">';
-        if (url) details +=url;
-        details += '<p>'+facebook+' '+twitter+'</p><p>Open access: '+open_access+'</p>'+'<p>Latest publication as of 2015: '+most_recent+'<p>Institutional repository: '+repository+'</p></div>'
+  if (data.twitter_carto) {
+    var twitter = '<li><i class="fa-li fa fa-twitter"></i>' + data.twitter_carto + '</li>';
+  } else {
+    var twitter = '';
+  };
 
-        info.innerHTML = details;
+  if (data.facebook_carto) {
+    var facebook = '<li><i class="fa-li fa fa-facebook"></i>' + data.facebook_carto + '</li>';
+  } else {
+    var facebook = '';
+  };
 
+  if (data.open_access_carto) {
+    var open_access = '<li><i class="fa-li fa fa-folder-open"></i>Open access? ' + data.open_access_carto + '</li>';
+  } else {
+    var open_access = '';
+  };
+
+  if (data.image_url_carto) {
+    image = '<img src="' + data.image_url_carto + '">';
+  } else {
+    image = '';
+  }
+
+  var title = '<div class="title">' + scholarly_publisher + '</div>';
+  var details = '<ul class="fa-ul">' + url + twitter + facebook + open_access + '</ul></div>';
+
+  info.innerHTML = title + details + image;
 });
 
 sublayer.on('mouseover', function() {
@@ -82,10 +101,6 @@ sublayer.setInteraction(true);
     },
     url: function(){
       sublayers[0].setSQL("SELECT * FROM african_university_presses WHERE url_carto != ''");
-      return true;
-    },
-    repository: function(){
-      sublayers[0].setSQL("SELECT * FROM african_university_presses WHERE repository_carto != ''");
       return true;
     }
   }
