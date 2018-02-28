@@ -1,25 +1,29 @@
 <html>
 <head>
-  <title>African University Presses</title>
+  <title>African Scholarly Publishers</title>
   <link rel="stylesheet" href="css/cartodb.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
 
 <body onload="init()">
   <div id='map'></div>
-  <div id="info"></div>
+  <div id="info">
+    <div class="title">African Scholarly Publishers</div>
+    <p>Click on one of the blue dots to get more information about a scholarly publisher.</p>
+    <p>Use the filters on the right to show only certain publishers.</p>
+  </div>
   <div id='menu'>
     <a href="#all" id="all" class="button all selected" title="Show all university presses">ALL PRESSES</a>
-    <a href="#openaccess" id="openaccess" class="button openaccess" title="Show presses with open access">OPEN ACCESS</a> 
-    <a href="#repository" id="repository" class="button repository" title="Show presses with an institutional repository">INSTITUTIONAL REPOSITORY</a> 
-    <a href="#url" id="url" class="button url" title="Show presses with their own website">WEBSITE</a> 
-    <a href="#facebook" id="facebook" class="button facebook" title="Show presses with a Facebook page">FACEBOOK</a> 
-    <a href="#twitter" id="twitter" class="button twitter" title="Show presses with a Twitter page">TWITTER</a> 
+    <a href="#openaccess" id="openaccess" class="button openaccess" title="Show presses with open access">OPEN ACCESS</a>
+    <a href="#url" id="url" class="button url" title="Show presses with their own website">WEBSITE</a>
+    <a href="#facebook" id="facebook" class="button facebook" title="Show presses with a Facebook page">FACEBOOK</a>
+    <a href="#twitter" id="twitter" class="button twitter" title="Show presses with a Twitter page">TWITTER</a>
   </div>
 
-  <div id='dataset'><a href="https://docs.google.com/spreadsheets/d/1URiTsMVkeM12DlZT7IfxqcYgVEt0hohIi4xIy983FI8" target="_blank">Download full dataset</a></div>
-  <div id='feedback'><a href="https://docs.google.com/a/code4sa.org/forms/d/1hjOAxKuRWRwWzKDscWH-H2O2k5ut7j46WDrZkZn9Jcg/viewform" target="_blank">Feedback / corrections</a></div>
+  <a id="dataset" href="https://docs.google.com/spreadsheets/d/1URiTsMVkeM12DlZT7IfxqcYgVEt0hohIi4xIy983FI8" target="_blank">Download full dataset</a>
+
+  <a id="feedback" href="https://docs.google.com/a/code4sa.org/forms/d/1hjOAxKuRWRwWzKDscWH-H2O2k5ut7j46WDrZkZn9Jcg/viewform" target="_blank">Feedback / corrections</a>
 
 </body>
   <script src="js/cartodb.js"></script>
