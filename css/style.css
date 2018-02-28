@@ -4,6 +4,7 @@ html {
   height: 100%;
   padding: 0;
   margin: 0;
+  font-family: "Helvetica", "Arial", sans-serif;
 }
 
 #map {
@@ -14,28 +15,41 @@ html {
 
 #menu {
   position: absolute;
-  top: 5px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
   width: 150px;
-  height: 60px;
   z-index: 10;
 }
 
 #menu a {
-  margin: 15px 10px 0 0;
   float: right;
-  vertical-align: baseline;
-  width: 120px;
+  width: 130px;
   padding: 10px;
   text-align: center;
-  font: bold 11px "Helvetica",Arial;
-  line-height: normal;
+  font: bold 11px "Helvetica", "Arial", sans-serif;
   color: #555;
-  border-radius: 3px;
   border: 1px solid #333;
+  border-bottom-width: 0;
   background: #ffffff;
   text-decoration: none;
   cursor: pointer;
+  text-transform: uppercase;
+}
+
+#menu .filter a:first-of-type, #menu .type a:first-of-type {
+  border-radius: 3px 3px 0 0;
+}
+
+#menu .filter a:last-of-type, #menu .type a:last-of-type {
+  border-radius: 0 0 3px 3px;
+  border-bottom-width: 1px;
+}
+
+#menu .type .subtitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 15px 0 10px 0;
+  text-align: center;
 }
 
 #menu a.selected,
@@ -46,7 +60,7 @@ html {
 
 #info {
   margin: 15px 10px 0 0;
-  font: 15px "Helvetica",Arial;
+  font: 15px "Helvetica", "Arial", sans-serif;
   color: #000;
   background: #ffffff;
   width: 250px;
@@ -103,13 +117,13 @@ html {
 }
 
 #dataset {
-  font: bold 15px "Helvetica",Arial;
+  font: bold 15px "Helvetica", "Arial", sans-serif;
   color: #555;
   background: #ffffff;
   width: 250px;
   height: 18px;
   bottom: 74px;
-  right: 20px;
+  left: 60px;
   border: 1px solid #333;
   border-radius: 3px;
   position: absolute;
@@ -129,13 +143,13 @@ html {
 }
 
 #feedback {
-  font: bold 15px "Helvetica",Arial;
+  font: bold 15px "Helvetica", "Arial", sans-serif;
   color: #555;
   background: #ffffff;
   width: 250px;
   height: 18px;
   bottom: 25px;
-  right: 20px;
+  left: 60px;
   border: 1px solid #333;
   border-radius: 3px;
   position: absolute;

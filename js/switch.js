@@ -1,31 +1,30 @@
-  var map;
-    function init(){
-  // initiate leaflet map
-  map = new L.Map('map', {
-      center: [0,10],
-      zoom: 3
-  })
+var map;
+  function init(){
+// initiate leaflet map
+map = new L.Map('map', {
+    center: [0,10],
+    zoom: 3
+});
 
+L.tileLayer("http://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
+  attribution: '<a href="http://code4sa.org/" target="_blank">Code4SA</a>'
+}).addTo(map);
 
-  L.tileLayer("http://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
-    attribution: '<a href="http://code4sa.org/" target="_blank">Code4SA</a>'
-  }).addTo(map);
+var layerUrl = 'https://adi45.cartodb.com/api/v2/viz/1178935a-d175-11e5-bbae-0e31c9be1b51/viz.json';
 
-  var layerUrl = 'https://adi45.cartodb.com/api/v2/viz/1178935a-d175-11e5-bbae-0e31c9be1b51/viz.json';
+var sublayers = [];
 
-  var sublayers = [];
+cartodb.createLayer(map, layerUrl)
+.addTo(map)
+.on('done', function(layer) {
+  // change the query for the first layer
+  var subLayerOptions = {
+    sql: "SELECT * FROM african_university_presses",
+    interactivity:"university_carto, scholarly_publisher_carto, facebook_carto, twitter_carto, url_carto, repository_carto, open_access_carto, most_recent_carto, image_url_carto, type_carto",
+  };
 
-  cartodb.createLayer(map, layerUrl)
-  .addTo(map)
-  .on('done', function(layer) {
-    // change the query for the first layer
-    var subLayerOptions = {
-      sql: "SELECT * FROM african_university_presses",
-      interactivity:"university_carto, scholarly_publisher_carto, facebook_carto, twitter_carto, url_carto, repository_carto, open_access_carto, most_recent_carto, image_url_carto",
-    }
-
-    var sublayer = layer.getSubLayer(0);
-    sublayer.set(subLayerOptions);
+var sublayer = layer.getSubLayer(0);
+sublayer.set(subLayerOptions);
 
 sublayer.on('featureClick', function(e, latlng, pos, data, subLayerIndex) {
   var university = data.university_carto;
@@ -101,6 +100,26 @@ sublayer.setInteraction(true);
     },
     url: function(){
       sublayers[0].setSQL("SELECT * FROM african_university_presses WHERE url_carto != ''");
+      return true;
+    },
+    unipress: function(){
+      sublayers[0].setSQL("SELECT * FROM african_university_presses WHERE type_carto = 'university press'");
+      return true;
+    },
+    printing: function(){
+      sublayers[0].setSQL("SELECT * FROM african_university_presses WHERE type_carto = 'printing press'");
+      return true;
+    },
+    academic: function(){
+      sublayers[0].setSQL("SELECT * FROM african_university_presses WHERE type_carto = 'academic publisher'");
+      return true;
+    },
+    predatory: function(){
+      sublayers[0].setSQL("SELECT * FROM african_university_presses WHERE type_carto = 'possible predatory publisher'");
+      return true;
+    },
+    other: function(){
+      sublayers[0].setSQL("SELECT * FROM african_university_presses WHERE type_carto = 'other'");
       return true;
     }
   }
