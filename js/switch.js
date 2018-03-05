@@ -6,7 +6,7 @@ map = new L.Map('map', {
     zoom: 3
 });
 
-L.tileLayer("http://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png", {
+L.tileLayer("https://b.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png", {
   attribution: '<a href="http://code4sa.org/" target="_blank">Code4SA</a>'
 }).addTo(map);
 
